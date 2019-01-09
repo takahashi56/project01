@@ -30,7 +30,8 @@ class LC_Page_Ex extends LC_Page
       parent::init();
 
       // ƒƒOƒCƒ“”»’è
-      $this->memberShipCategory = 217;
+      $helperCategory = new SC_Helper_Category_Ex();
+      $this->memberShipCategory = $helperCategory->getMembershipCategoryID();
 
       $objCustomer = new SC_Customer_Ex();
       if ($objCustomer->isLoginSuccess() === true) {
@@ -38,8 +39,7 @@ class LC_Page_Ex extends LC_Page
           $this->CustomerName1 = $objCustomer->getValue('name01');
           $this->CustomerName2 = $objCustomer->getValue('name02');
           $this->CustomerPoint = $objCustomer->getValue('point');
-          if ($this->VideoValidDays == null)
-            $this->VideoValidDays = $this->lfGetMembershipFeeOrder($objCustomer->getValue('customer_id'));
+          $this->VideoValidDays = $this->lfGetMembershipFeeOrder($objCustomer->getValue('customer_id'));
       } else {
           $this->tpl_login = false;
       }

@@ -40,6 +40,7 @@ class SC_Helper_Category
     public function __construct($count_check = FALSE)
     {
         $this->count_check = $count_check;
+        $this->getMembershipCategoryID = 217;
     }
 
     /**
@@ -189,5 +190,10 @@ class SC_Helper_Category
             return true;
         }
         return false;
+    }
+
+    public function getMembershipCategoryID()
+    {
+        return $this->getMembershipCategoryID;
     }
 }
