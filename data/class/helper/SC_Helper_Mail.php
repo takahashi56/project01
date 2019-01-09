@@ -561,4 +561,24 @@ class SC_Helper_Mail
 
         return;
     }
+
+    public function sfSendUnsubscribeEmail($fromemail, $fromname, $fromId)
+    {
+        // メールテンプレート情報の取得
+        $tmp_subject = '退会申請がありました';
+
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+
+        $body = '下記ユーザーから退会申請がありました。' . '<br/>';
+        $body .= 'ユーザーID: ' . $fromId . '<br/>';
+        $body .= 'ユーザー名: ' . $fromname . '<br/>';
+        $body .= 'メールアドレス: ' . $fromemail . '<br/>';
+
+        // メール送信処理
+        $objSendMail = new SC_SendMail_Ex();
+
+        $objSendMail->setItem('', $tmp_subject, $body, $fromemail, $fromname);
+        $objSendMail->setTo($arrInfo['email01'], $arrInfo['shop_name']);
+        $objSendMail->sendMail();    // メール送信
+    }
 }

@@ -6,7 +6,8 @@
 	<!--{/if}-->
 	<!--{if $VideoValidDays !== -1 }-->
 	<br/>&nbsp;
-	<span class="user_name"><!--{$CustomerName1|h}--> <!--{$CustomerName2|h}--> 様</span>&nbsp;は&nbsp;<span class="point st"><!--{$VideoValidDays|number_format|default:"0"|h}--></span>&nbsp;日間動画を閲覧することができます。
+	<span class="user_name"><!--{$CustomerName1|h}--> <!--{$CustomerName2|h}--> 様</span>&nbsp;は&nbsp;<span class="point st"><!--{$VideoValidDays|number_format|default:"0"|h}--></span>&nbsp;日の会員費をサブスクライブしました。
+	&nbsp;(退会申請は <a href="<!--{$smarty.const.ROOT_URLPATH}-->unsubscribe/">こちら</a> からご進んでください。）
 	<!--{else}-->
 	&nbsp;(会員費は <a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$memberShipCategory}-->">こちら</a> からご購入いただけます。）
 	<!--{/if}-->

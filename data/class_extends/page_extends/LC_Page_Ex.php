@@ -38,7 +38,8 @@ class LC_Page_Ex extends LC_Page
           $this->CustomerName1 = $objCustomer->getValue('name01');
           $this->CustomerName2 = $objCustomer->getValue('name02');
           $this->CustomerPoint = $objCustomer->getValue('point');
-          $this->VideoValidDays = $this->lfGetMembershipFeeOrder($objCustomer->getValue('customer_id'));
+          if ($this->VideoValidDays == null)
+            $this->VideoValidDays = $this->lfGetMembershipFeeOrder($objCustomer->getValue('customer_id'));
       } else {
           $this->tpl_login = false;
       }
@@ -82,24 +83,35 @@ class LC_Page_Ex extends LC_Page
 
     $diff = -1;
 
-    $customerOrders = $objQuery->getCol('o.create_date', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
+    // $customerOrders = $objQuery->getCol('o.update_date', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
 
-    if (sizeof($customerOrders) > 0) {
-      $now = time(); 
-      $your_date = strtotime($customerOrders[sizeof($customerOrders) - 1]);
-      $datediff = $now - $your_date;
+    // if (sizeof($customerOrders) > 0) {
+      // $now = time(); 
+      // $your_date = strtotime($customerOrders[sizeof($customerOrders) - 1]);
+      // $datediff = $now - $your_date;
 
-      $diff = round($datediff / (60 * 60 * 24));  
+      // $diff = round($datediff / (60 * 60 * 24));  
 
-      $orders = $objQuery->getCol('o.order_id', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
+    $orders = $objQuery->getCol('o.order_id', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and o.del_flg = 0 and pc.category_id = ' . $this->memberShipCategory);
+    $this->membershipOrderIds = $orders;
 
+    if (sizeof($orders) > 0) {
       $days = $objQuery->getCol('pc.product_code', '(dtb_products_class as pc left join dtb_products as p on p.product_id = pc.product_id) left join dtb_order_detail as od on od.product_id = pc.product_id', 'od.order_id = ?', $orders[sizeof($orders) - 1]);
+
+      if (sizeof($orders) > 1) {
+        unset($orders[sizeof($orders) - 1]);
+        $objQuery->update('dtb_order', array('del_flg' => 1), 'order_id = ?', $orders);
+      }
       
       $validDays = (int) $days[0];
-      $diff = $validDays - $diff;
+      // $diff = $validDays - $diff;
+
+      return $validDays;
     }
 
-    return $diff;      
+    return -1;
+
+    // return $diff;      
   }
   
   /**
