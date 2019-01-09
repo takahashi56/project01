@@ -208,9 +208,34 @@ __EOS__;
 
         // 税込金額を設定する
         SC_Product_Ex::setIncTaxToProduct($arrProduct);
-
+        
         return $arrProduct;
     }
+
+
+    public function strGetVideoUrl($product_id, $base_path = VIDEO_TANK_URL, $time_limit = 86400) { // 24時間で時間切れ
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $record = $objQuery->getCol('pc.down_filename', 'dtb_products_class as pc left join dtb_products as p on pc.product_id = p.product_id', 'pc.product_type_id = 2 and pc.product_id = ' . $product_id);
+        
+        if (sizeof($record) <= 0) 
+            return null;
+        
+        $filename = $record[0];
+        $q = array(
+            'f' => $filename,
+            't' => time() + $time_limit
+        );
+        $extention = pathinfo($filename, PATHINFO_EXTENSION); // 2017/07/03 拡張子の追加
+        $key = '4&%-NE6MTC7B54-6YH0GVHS74#SCHF';
+        $param = openssl_encrypt(http_build_query($q), 'AES-128-ECB', $key);
+        //return $base_path . base64_encode($param) . '.' . $extention;
+
+        if (strpos($filename, 'http:') !== false || strpos($filename, 'https:') !== false) {
+            return $filename;
+        }
+        return $base_path . $filename;//20180919 直接リンクにした
+    }
+
 
     /**
      * 商品詳細情報と商品規格を取得する.

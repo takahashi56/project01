@@ -1,3 +1,5 @@
+<link href="http://vjs.zencdn.net/5.16.0/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 <script type="text/javascript">//<![CDATA[
     // 規格2に選択肢を割り当てる。
     function fnSetClassCategories(form, classcat_id2_selected) {
@@ -21,17 +23,28 @@
 
 		<div class="video-column">
 			<div class="centered video-area"><div>
-			<a
-				<!--{if $arrProduct.main_large_image|strlen >= 1}-->
-					href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
-				<!--{else}-->
-					href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->"
-				<!--{/if}-->
-				class="cboxElement expansion"
-				target="_blank"
-			>
-				<img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->">
-			</a>
+			<!--{if $is_videoshow == true}-->
+				<div class="video-item">
+	                <div class="video-view">
+	                    <video  class="video-js vjs-big-play-centered" controls preload="none" width="100%" height="100%" poster="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|sfNoImageMainList|h}-->"  data-setup="{}">
+	                        <source src="<!--{$down_videoUrl}-->" type="video/mp4" />
+	                    </video>
+	            	</div>
+	            </div>
+			<!--{else}-->
+				<a
+					<!--{if $arrProduct.main_large_image|strlen >= 1}-->
+						href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
+					<!--{else}-->
+						href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->"
+					<!--{/if}-->
+					class="cboxElement expansion"
+					target="_blank"
+				>
+					<img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_image|h}-->">
+				</a>
+			<!--{/if}-->
+			
 			</div></div>
 		</div>
 
@@ -123,7 +136,7 @@
 
 	</div>
 </div>
-
+<script src="http://vjs.zencdn.net/5.16.0/video.js"></script>
 <script>
 	$(document).ready(function(){
 		if($(window).width() > 767) {

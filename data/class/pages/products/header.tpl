@@ -114,6 +114,7 @@
 				<li><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" class="header-under-menu"><span class="manicon icon_tool"></span><span class="manlink">マイページ</span></li>
 				<li><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/favorite.php" class="header-under-menu"><span class="manicon icon_star"></span><span class="manlink">お気に入り</span></li>
 				<li><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/videos.php" class="header-under-menu"><span class="manicon icon_play"></span><span class="manlink">プレイリスト</span></li>
+				<li><a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$memberShipCategory}-->"><span class="manicon icon_point"></span><span class="manlink">会員費購入する</span></li>
 				<li><a href="<!--{$smarty.const.CART_URL}-->" class="header-under-menu"><span class="manicon icon_cart"></span><span class="manlink">カート</span></li>
 			</ul>
 		</div>

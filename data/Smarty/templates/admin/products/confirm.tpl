@@ -96,14 +96,6 @@
                     <!--{$arrForm.down_filename|h}-->
                 </td>
             </tr>
-            <tr>
-                <th>ダウンロード商品用<br />ファイル</th>
-                <td>
-                    <!--{if $arrForm.down_realfilename != ""}-->
-                        <!--{$arrForm.down_realfilename|h}-->
-                    <!--{/if}-->
-                </td>
-            </tr>
             <!--{/if}-->
             <tr>
                 <th>商品コード</th>

@@ -83,8 +83,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
 
         // ダウンロード販売ファイル情報の初期化
         $objDownFile = new SC_UploadFile_Ex(DOWN_TEMP_REALDIR, DOWN_SAVE_REALDIR);
-        $this->lfInitDownFile($objDownFile);
-        $objDownFile->setHiddenFileList($_POST);
+        // $this->lfInitDownFile($objDownFile);
+        // $objDownFile->setHiddenFileList($_POST);
 
         // 検索パラメーター引き継ぎ
         $this->arrSearchHidden = $this->lfGetSearchParam($_POST);
@@ -109,10 +109,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
                 // 複製の場合は、ダウンロード商品情報部分はコピーしない
                 if ($mode == 'copy') {
                     // ダウンロード商品ファイル名をunset
-                    $arrForm['down_filename'] = '';
+                    // $arrForm['down_filename'] = '';
 
                     // $objDownFile->setDBDownFile()でsetされたダウンロードファイル名をunset
-                    unset($objDownFile->save_file[0]);
+                    // unset($objDownFile->save_file[0]);
                 }
 
                 // ページ表示用パラメーター設定
@@ -168,7 +168,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
                     // ダウンロード商品の複製時に、ダウンロード商品用ファイルを
                     // 変更すると、複製元のファイルが削除されるのを回避。
                     if (!empty($arrForm['copy_product_id'])) {
-                        $objDownFile->save_file = array();
+                        // $objDownFile->save_file = array();
                     }
 
                     // 一時ファイルを本番ディレクトリに移動する
@@ -227,11 +227,11 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
                 switch ($mode) {
                     case 'upload_down':
                         // ファイルを一時ディレクトリにアップロード
-                        $this->arrErr[$arrForm['down_key']] = $objDownFile->makeTempDownFile();
+                        // $this->arrErr[$arrForm['down_key']] = $objDownFile->makeTempDownFile();
                         break;
                     case 'delete_down':
                         // ファイル削除
-                        $objDownFile->deleteFile($arrForm['down_key']);
+                        // $objDownFile->deleteFile($arrForm['down_key']);
                         break;
                     default:
                         break;
@@ -319,7 +319,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
             // 新規登録, 規格なし商品の編集の場合
             $objFormParam->addParam('商品種別', 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('ダウンロード商品ファイル名', 'down_filename', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam('ダウンロード商品実ファイル名', 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            // $objFormParam->addParam('ダウンロード商品実ファイル名', 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('temp_down_file', 'temp_down_file', '', '', array());
             $objFormParam->addParam('save_down_file', 'save_down_file', '', '', array());
             $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -438,7 +438,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      */
     public function lfInitDownFile(&$objDownFile)
     {
-        $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(',', DOWNLOAD_EXTENSION), DOWN_SIZE, true, 0, 0);
+        // $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(',', DOWNLOAD_EXTENSION), DOWN_SIZE, true, 0, 0);
     }
 
     /**
@@ -478,7 +478,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
             }
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
             if ($arrForm['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
-                $arrErr = array_merge((array) $arrErr, (array) $objDownFile->checkExists());
+                // $arrErr = array_merge((array) $arrErr, (array) $objDownFile->checkExists());
                 $objErr->doFunc(array('ダウンロード商品ファイル名', 'down_filename'), array('EXIST_CHECK'));
             }
         }
@@ -554,7 +554,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         // DBデータから画像ファイル名の読込
         $objUpFile->setDBFileList($arrForm);
         // DBデータからダウンロードファイル名の読込
-        $objDownFile->setDBDownFile($arrForm);
+        // $objDownFile->setDBDownFile($arrForm);
 
         return $arrForm;
     }
@@ -611,13 +611,13 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         }
         // アップロードファイル情報取得(Hidden用)
         $arrHidden = $objUpFile->getHiddenFileList();
-        $arrForm['arrHidden'] = array_merge((array) $arrHidden, (array) $objDownFile->getHiddenFileList());
+        // $arrForm['arrHidden'] = array_merge((array) $arrHidden, (array) $objDownFile->getHiddenFileList());
 
         // 画像ファイル表示用データ取得
         $arrForm['arrFile'] = $objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
 
         // ダウンロード商品実ファイル名取得
-        $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
+        // $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
 
         // 基本情報(デフォルトポイントレート用)
         $arrForm['arrInfo'] = SC_Helper_DB_Ex::sfGetBasisData();
@@ -646,7 +646,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         // 画像ファイル用データ取得
         $arrForm['arrFile'] = $objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         // ダウンロード商品実ファイル名取得
-        $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
+        // $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
 
         return $arrForm;
     }
@@ -796,7 +796,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
                 }
             }
         }
-        $objDownFile->moveTempDownFile();
+        // $objDownFile->moveTempDownFile();
     }
 
     /**
@@ -1112,7 +1112,7 @@ __EOF__;
                     }
                 }
             }
-            $objDownFile->deleteDBDownFile($arrRet);
+            // $objDownFile->deleteDBDownFile($arrRet);
             // UPDATEの実行
             $where = 'product_id = ?';
             $objQuery->update('dtb_products', $sqlval, $where, array($product_id));
@@ -1162,12 +1162,14 @@ __EOF__;
         $objDb = new SC_Helper_DB_Ex();
 
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate', 'product_type_id', 'down_filename', 'down_realfilename');
+        // $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate', 'product_type_id', 'down_filename', 'down_realfilename');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate', 'product_type_id', 'down_filename');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 
         $sqlval['stock_unlimited'] = $sqlval['stock_unlimited'] ? UNLIMITED_FLG_UNLIMITED : UNLIMITED_FLG_LIMITED;
         $sqlval['creator_id'] = strlen($_SESSION['member_id']) >= 1 ? $_SESSION['member_id'] : '0';
+        $sqlval['down_realfilename'] = $sqlval['down_filename'];
 
         if (strlen($sqlval['product_class_id']) == 0) {
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');

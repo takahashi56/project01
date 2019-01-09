@@ -21,8 +21,8 @@
  *}-->
 
 <!--▼HEADER-->
-<link rel="stylesheet" href="/user_data/packages/DL002/css/blaze.min.css" type="text/css" media="all" />
-<link rel="stylesheet" href="/user_data/packages/DL002/css/blaze.colors.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="user_data/packages/DL002/css/blaze.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="user_data/packages/DL002/css/blaze.colors.min.css" type="text/css" media="all" />
 
 
 <!--▲HEADER-->

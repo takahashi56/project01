@@ -85,6 +85,11 @@ class LC_Page_Products_Detail_Ex extends LC_Page_Products_Detail
         $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'), $this->objFormParam->getValue('product_id'), $objProduct);
 
         $objProduct->setProductsClassByProductIds(array($product_id));
+        $this->down_videoUrl = $objProduct->strGetVideoUrl($product_id);
+        if (isset($this->down_videoUrl) && $this->VideoValidDays >= 0) 
+            $this->is_videoshow = true;
+        else
+            $this->is_videoshow = false;
 
         // 規格1クラス名
         $this->tpl_class_name1 = $objProduct->className1[$product_id];

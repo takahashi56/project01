@@ -30,13 +30,15 @@ class LC_Page_Ex extends LC_Page
       parent::init();
 
       // ƒƒOƒCƒ“”»’è
+      $this->memberShipCategory = 217;
+
       $objCustomer = new SC_Customer_Ex();
       if ($objCustomer->isLoginSuccess() === true) {
           $this->tpl_login = true;
           $this->CustomerName1 = $objCustomer->getValue('name01');
           $this->CustomerName2 = $objCustomer->getValue('name02');
           $this->CustomerPoint = $objCustomer->getValue('point');
-          
+          $this->VideoValidDays = $this->lfGetMembershipFeeOrder($objCustomer->getValue('customer_id'));
       } else {
           $this->tpl_login = false;
       }
@@ -72,6 +74,32 @@ class LC_Page_Ex extends LC_Page
       //$this->action();
 
 
+  }
+
+  public function lfGetMembershipFeeOrder($customerId)
+  {
+    $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+    $diff = -1;
+
+    $customerOrders = $objQuery->getCol('o.create_date', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
+
+    if (sizeof($customerOrders) > 0) {
+      $now = time(); 
+      $your_date = strtotime($customerOrders[sizeof($customerOrders) - 1]);
+      $datediff = $now - $your_date;
+
+      $diff = round($datediff / (60 * 60 * 24));  
+
+      $orders = $objQuery->getCol('o.order_id', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
+
+      $days = $objQuery->getCol('pc.product_code', '(dtb_products_class as pc left join dtb_products as p on p.product_id = pc.product_id) left join dtb_order_detail as od on od.product_id = pc.product_id', 'od.order_id = ?', $orders[sizeof($orders) - 1]);
+      
+      $validDays = (int) $days[0];
+      $diff = $validDays - $diff;
+    }
+
+    return $diff;      
   }
   
   /**

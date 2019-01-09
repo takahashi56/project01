@@ -172,21 +172,6 @@
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
-                <span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
-            </td>
-        </tr>
-        <tr class="type-download">
-            <!--{assign var=key value="down_file"}-->
-            <th>ダウンロード商品用<br />ファイルアップロード<span class="attention"> *</span></th>
-            <td>
-                <a name="<!--{$key}-->"></a>
-                <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
-                    <!--{if $arrForm.down_realfilename != ""}-->
-                        <!--{$arrForm.down_realfilename|h}--><input type="hidden" name="down_realfilename" value="<!--{$arrForm.down_realfilename|h}-->">
-                        <a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br />
-                    <!--{/if}-->
-                    <input type="file" name="down_file" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメーター DOWNLOAD_EXTENSION)
             </td>
         </tr>
         <tr>

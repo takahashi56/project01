@@ -112,8 +112,10 @@ __EOS__;
         $param = openssl_encrypt(http_build_query($q), 'AES-128-ECB', $key);
         //return $base_path . base64_encode($param) . '.' . $extention;
 
+        if (strpos($filename, 'http:') !== false || strpos($filename, 'https:') !== false) {
+            return $filename;
+        }
         return $base_path . $filename;//20180919 直接リンクにした
-
     }
 
 }
