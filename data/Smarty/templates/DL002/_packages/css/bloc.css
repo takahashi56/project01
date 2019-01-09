@@ -1,0 +1,170 @@
+@charset "utf-8";
+
+/************************************************
+ ブロック用
+************************************************ */
+/*** 目次 ***
+
+▼ブロック共通
+リスト
+タイトル
+ヘッダー上、フッター下のブロックエリア
+
+▼各機能ブロックの指定
+-新着情報
+-現在のカートの中
+-カテゴリ
+-ガイドリンク
+-ログイン（サイド用）
+-検索
+-カレンダー
+-おすすめ商品
+    * 商品詳細のオススメ商品   [whobought_area]
+*/
+
+
+/* ==============================================
+ブロック共通
+    * #container から指定することで、ヘッダー・フッターには適用していない。
+/* ============================================= */
+.side_column {
+    overflow-x: hidden; /* IE6 表示乱れ防止 */
+}
+
+/* ***********************************************
+▼各機能ブロックの指定
+/*********************************************** */
+
+/* ===============================================
+▼新着情報
+=============================================== */
+
+
+/* ===============================================
+▼現在のカートの中
+=============================================== */
+
+
+/* ===============================================
+▼カテゴリ
+=============================================== */
+/*
+    bootstrap3.x The removal of nav-list
+    http://stackoverflow.com/questions/18281636/what-replaces-nav-lists-in-bootstrap-3
+    https://gist.github.com/jimbojsb/6754116
+*/
+#category_area li > a {
+    padding: 5px 10px;
+}
+#category_area li.level2 > a {
+    padding-left: 15px;
+}
+#category_area li.level3 > a {
+    padding-left: 20px;
+}
+#category_area li.level4 > a {
+    padding-left: 25px;
+}
+#category_area li.level5 > a {
+    padding-left: 30px;
+}
+
+
+/* ===============================================
+▼ガイドリンク
+=============================================== */
+
+
+/* ===============================================
+▼ログイン（サイド用）
+※ヘッダー用はbloc_alpha.css内に記述
+=============================================== */
+
+
+/* ===============================================
+▼検索
+=============================================== */
+
+
+/* ===============================================
+▼カレンダー
+=============================================== */
+#calender_area table td {
+    padding: 1px 3px;
+    text-align: center;
+}
+#calender_area th {
+    padding: 1px 3px;
+    text-align: center;
+}
+#calender_area table .month {
+}
+#calender_area .off {
+    color: #d44950;
+}
+#calender_area .today {
+    background-color: #eee;
+    font-weight: bold;
+}
+#calender_area .information {
+}
+
+
+/* ===============================================
+▼おすすめ商品
+=============================================== */
+/*
+   tplファイルのマークアップが同じ項目
+   メインカラム用
+   サイドカラム用           [side_column]
+   商品詳細のオススメ商品   [whobought_area]
+=============================================== */
+/* 共通
+----------------------------------------------- */
+#recommend_area a:link:hover {
+    text-decoration: none;
+}
+#recommend_area .recommend-title {
+    display: block;
+    height: 30px;
+    overflow: hidden;
+}
+#recommend_area .recommend-price {
+    display: block;
+    height: 40px;
+    overflow: hidden;
+}
+#recommend_area .recommend-comment {
+    display: block;
+    height: 40px;
+    overflow: hidden;
+}
+
+/*#recommend_area .block_body,
+#whobought_area .product_item {
+    padding: 10px 0 10px;
+    border: none;
+    background: url("../img/background/line_dot_01.gif") repeat-x bottom;
+}
+
+#recommend_area .block_body p,
+#whobought_area .product_item p {
+    margin: 0 0 5px 0;
+}
+
+#recommend_area .block_body img,
+#whobought_area .product_item img {
+    margin: 0 5px 0 0;
+}
+
+#recommend_area .block_body h3,
+#whobought_area .product_item h3 {
+    font-size: 100%;
+    font-weight: normal;
+}
+*/
+/* サイドカラム用 */
+/*.side_column #recommend_area .product_item {
+    margin-bottom: 10px;
+}
+*/

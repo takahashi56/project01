@@ -1,0 +1,119 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+require_once CLASS_REALDIR . 'helper/SC_Helper_Purchase.php';
+
+/**
+ * 商品購入関連のヘルパークラス(拡張).
+ *
+ * LC_Helper_Purchase をカスタマイズする場合はこのクラスを編集する.
+ *
+ * @package Helper
+ * @author Kentaro Ohkouchi
+ * @version $Id$
+ */
+class SC_Helper_Purchase_Ex extends SC_Helper_Purchase {
+
+    /**
+     * ダウンロードリストを取得する.
+     *
+     * @return array   受注詳細の配列
+     */
+    public function getDownloadList($customer_id = null, $startno = -1) {
+        $objQuery = & SC_Query_Ex::getSingletonInstance();
+        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+        $col = <<< __EOS__
+            T3.product_id,
+            T3.product_class_id as product_class_id,
+            T3.product_type_id AS product_type_id,
+            T3.down_filename AS down_filename,
+            T3.down_realfilename AS down_realfilename,
+            T4.main_list_image AS main_list_image,
+            T2.product_code,
+            T2.product_name,
+            T2.classcategory_name1 AS classcategory_name1,
+            T2.classcategory_name2 AS classcategory_name2,
+            T2.price,
+            T2.quantity,
+            T2.point_rate,
+            T2.tax_rate,
+            T2.tax_rule,
+__EOS__;
+        $col .= 'T1.status AS status, T1.payment_date AS payment_date,';
+        $col .= <<< __EOS__
+            CASE WHEN
+                EXISTS(
+                    SELECT * FROM dtb_products
+                    WHERE product_id = T3.product_id
+                        AND del_flg = 0
+                        AND status = 1
+                )
+                THEN '1'
+                ELSE '0'
+            END AS enable,
+__EOS__;
+        $col .= $dbFactory->getDownloadableDaysWhereSql('T1') . ' AS effective';
+        $from = <<< __EOS__
+            dtb_order T1
+            JOIN dtb_order_detail T2
+                ON T1.order_id = T2.order_id
+            LEFT JOIN dtb_products_class T3
+                ON T2.product_class_id = T3.product_class_id
+            LEFT JOIN dtb_products T4
+                ON T3.product_id = T4.product_id
+__EOS__;
+        $where = ' T1.del_flg = 0 AND T1.customer_id = ? AND T3.product_type_id = ? AND (T2.price = 0 OR (T1.payment_date IS NOT NULL AND ' . $dbFactory->getDownloadableDaysWhereSql('T1') . ' = 1))';
+        $arrWhereVal = array($customer_id);
+        $arrWhereVal = array($customer_id, PRODUCT_TYPE_DOWNLOAD);
+        $order = 'T2.order_detail_id DESC';
+        if ($startno == -1) {
+            return $objQuery->count($from, $where, $arrWhereVal);
+        }
+        $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
+        // 表示順序
+        $objQuery->setOrder($order);
+
+        return $objQuery->select($col, $from, $where, $arrWhereVal);
+    }
+
+    /**
+     * 動画URLを取得する.
+     *
+     * @return array   受注詳細の配列
+     */
+    public function strGetVideoUrl($filename, $base_path = VIDEO_TANK_URL, $time_limit = 86400) { // 24時間で時間切れ
+        $q = array(
+            'f' => $filename,
+            't' => time() + $time_limit
+        );
+        $extention = pathinfo($filename, PATHINFO_EXTENSION); // 2017/07/03 拡張子の追加
+        $key = '4&%-NE6MTC7B54-6YH0GVHS74#SCHF';
+        $param = openssl_encrypt(http_build_query($q), 'AES-128-ECB', $key);
+        //return $base_path . base64_encode($param) . '.' . $extention;
+
+        return $base_path . $filename;//20180919 直接リンクにした
+
+    }
+
+}
