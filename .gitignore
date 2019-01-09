@@ -1,3 +1,4 @@
-/data/config/config.php
+/data/config
 /upload
 /data/logs
+/data/Smarty/templates_c
