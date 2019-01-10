@@ -41,3 +41,7 @@
 /unsupported
 /data/class_extends/page_extends/cart
 /data/class_extends/page_extends/forgot
+/data/config/config.php
+.DB_Store
+data/class_extends/page_extends/.DB_Store
+data/Smarty/.DB_Store
