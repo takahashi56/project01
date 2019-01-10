@@ -72,7 +72,7 @@ class LC_Page_Admin_Customer_Subscribe extends LC_Page_Admin_Ex
 
             SC_Response_Ex::sendRedirect('subscribe.php');
         } else {
-            $orders = $objQuery->getAll('select o.order_id, o.create_date, o.update_date, o.customer_id, o.order_name01, o.order_name02, p.name from (dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id left join dtb_products as p on pc.product_id = p.product_id where o.del_flg = 0 and pc.category_id = ?', array($this->membershipCategoryID));
+            $orders = $objQuery->getAll('select o.order_id, o.create_date, o.update_date, o.customer_id, o.order_name01, o.order_name02, p.name, o.del_flg from (dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id left join dtb_products as p on pc.product_id = p.product_id where pc.category_id = ?', array($this->membershipCategoryID));
 
             $this->orders = array();
 

@@ -81,17 +81,6 @@ class LC_Page_Ex extends LC_Page
   {
     $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-    $diff = -1;
-
-    // $customerOrders = $objQuery->getCol('o.update_date', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and pc.category_id = ' . $this->memberShipCategory);
-
-    // if (sizeof($customerOrders) > 0) {
-      // $now = time(); 
-      // $your_date = strtotime($customerOrders[sizeof($customerOrders) - 1]);
-      // $datediff = $now - $your_date;
-
-      // $diff = round($datediff / (60 * 60 * 24));  
-
     $orders = $objQuery->getCol('o.order_id', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and o.del_flg = 0 and pc.category_id = ' . $this->memberShipCategory);
     $this->membershipOrderIds = $orders;
 
@@ -100,18 +89,19 @@ class LC_Page_Ex extends LC_Page
 
       if (sizeof($orders) > 1) {
         unset($orders[sizeof($orders) - 1]);
-        $objQuery->update('dtb_order', array('del_flg' => 1), 'order_id = ?', $orders);
+        $objQuery->update('dtb_order', array('del_flg' => 1, 'update_date' => date('Y-m-d H:i:s')), 'order_id = ?', $orders);
       }
-      
-      $validDays = (int) $days[0];
-      // $diff = $validDays - $diff;
 
-      return $validDays;
+      $orderDates = $objQuery->getCol('o.update_date', '(dtb_order as o left join dtb_order_detail as od on o.order_id = od.order_id) left join dtb_product_categories as pc on od.product_id = pc.product_id', 'o.customer_id = ' . $customerId . ' and o.del_flg = 0 and pc.category_id = ' . $this->memberShipCategory);
+      
+      $now = time(); 
+      $your_date = strtotime($orderDates[0]);
+      $datediff = round(($your_date - $now) / (60 * 60 * 24)) + (int) $days[0];
+
+      return ($datediff >= 0) ? $datediff : -1;
     }
 
     return -1;
-
-    // return $diff;      
   }
   
   /**

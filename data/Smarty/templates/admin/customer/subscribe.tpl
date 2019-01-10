@@ -28,6 +28,7 @@
 		<th rowspan="2" class="center">会員費名</th>
 		<th colspan="3" class="center">会員費</th>
 		<th rowspan="2" class="center">支払更新</th>
+		<th rowspan="2" class="center">退会日</th>
 	</tr>
 	<tr>
 		<th class="center">申請日</th>
@@ -36,6 +37,7 @@
 	</tr>
 	<!--{foreach from=$orders item=item name=item_loop}-->
 	<tr>
+		<!--{if $item.del_flg == 0}-->
 		<td class="center"><!--{$item.order_name01}-->&nbsp;<!--{$item.order_name02}--></td>
 		<td class="center"><!--{$item.name}--></td>
 		<td class="center"><!--{$item.create_date}--></td>
@@ -61,6 +63,26 @@
 				<button type="submit">支払更新</button>
 			</form>
 		</td>
+		<td></td>
+
+		<!--{else}-->
+
+		<td class="center"><!--{$item.order_name01}-->&nbsp;<!--{$item.order_name02}--></td>
+		<td class="center"><!--{$item.name}--></td>
+		<td class="center"><!--{$item.create_date}--></td>
+		<td class="center">
+			<span style='color: red;'>退会</span>
+		</td>
+		<td class="center">
+			<span style='color: red;'>退会</span>
+		</td>
+		<td class="center">
+			
+		</td>
+		<td class="center">
+			<span style='color: red;'><!--{$item.update_date}--></span>
+		</td>
+		<!--{/if}-->
 	</tr>
 	<!--{/foreach}-->
 </table>
